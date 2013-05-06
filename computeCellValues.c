@@ -1,8 +1,7 @@
 #include "computeCellValues.h"
 #include "LBDefinitions.h"
-#include <math.h>
 
-void computeDensity(const double const * currentCell, double *density)
+void computeDensity(const double * const currentCell, double *density)
 {
 	/* See formula 9 */
 	double sum;
@@ -11,10 +10,10 @@ void computeDensity(const double const * currentCell, double *density)
 	{
 		sum += currentCell[i];
 	}
-	density = sum;
+	*density = sum;
 }
 
-void computeVelocity(const double const * currentCell, const double * const density, double *velocity)
+void computeVelocity(const double * const currentCell, const double * const density, double *velocity)
 {
 	/* Compute each dimension separated, see figure 1 and table 1 */
 	velocity[0] = -currentCell[1] + currentCell[3] - currentCell[5] +
@@ -27,18 +26,18 @@ void computeVelocity(const double const * currentCell, const double * const dens
 			currentCell[3] - currentCell[4] + currentCell[14] + currentCell[15] +
 			currentCell[16] + currentCell[17] + currentCell[18];
 
-	velocity[0] /= density;
-	velocity[1] /= density;
-	velocity[2] /= density;
+	velocity[0] = velocity[0] / *density;
+	velocity[1] = velocity[1] / *density;
+	velocity[2] = velocity[2] / *density;
 }
 
-void computeFeq(const double const * density, const double const * velocity, double *feq)
+void computeFeq(const double * const density, const double * const velocity, double *feq)
 {
 	/* See formula 10 */
 	int i;
 	for(i = 0; i < 19; i++)
 	{
-		feq[i] = LATTICEWEIGHTS[i] * density * (1
+		feq[i] = LATTICEWEIGHTS[i] * *density * (1
 				+ (LATTICEVELOCITIES[i][0]*velocity[0] +
 					LATTICEVELOCITIES[i][1]*velocity[1] +
 					LATTICEVELOCITIES[i][2]*velocity[2])/(C_S*C_S)

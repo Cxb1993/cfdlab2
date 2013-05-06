@@ -20,7 +20,7 @@ int main(int argc, char *argv[]){
   char* filename;
   int t;
 
-  readParameters(&xlength, &tau, &velocityWall, &timesteps, &timestepsPerPlotting, argc, argv);
+  readParameters(&xlength, &tau, velocityWall, &timesteps, &timestepsPerPlotting, argc, argv);
 
   filename = "./Out/Output";
   t = 0;

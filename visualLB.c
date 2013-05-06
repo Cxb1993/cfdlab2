@@ -50,7 +50,6 @@ void write_vtkPointCoordinates( FILE *fp, int xlength)
 
 void writeVtkOutput(const double * const collideField, const int * const flagField, const char* filename, unsigned int t,int xlength)
 {
-	double* currentCell;
 	double density;
 	double velocity[3];
 
@@ -83,9 +82,8 @@ void writeVtkOutput(const double * const collideField, const int * const flagFie
 			for(z = 1; z < xlength+1; z++)
 			{
 				/* Compute adress of current cell */
-				currentCell = collideField + 19*(z*(xlength*xlength) + y*xlength + x);
-				computeDensity(currentCell, &density);
-				computeVelocity(currentCell, &density, velocity);
+				computeDensity(&collideField[19*(z*(xlength+2)*(xlength+2) + y*(xlength+2) + x)], &density);
+				computeVelocity(&collideField[19*(z*(xlength+2)*(xlength+2) + y*(xlength+2) + x)], &density, velocity);
 				fprintf(fp, "%f %f %f\n", velocity[0], velocity[1], velocity[2]);
 			}
 		}
@@ -101,8 +99,7 @@ void writeVtkOutput(const double * const collideField, const int * const flagFie
 		{
 			for(z = 1; z < xlength+1; z++)
 			{
-				currentCell = &collideField[19*(z*(xlength*xlength) + y*xlength + x)];
-				computeDensity(currentCell, &density);
+				computeDensity(&collideField[19*(z*(xlength+2)*(xlength+2) + y*(xlength+2) + x)], &density);
 				fprintf(fp, "%f\n", density);
 			}
 		}

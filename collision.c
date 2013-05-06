@@ -7,7 +7,7 @@ void computePostCollisionDistributions(double *currentCell, const double * const
 	int i;
 	for(i=0; i<19; i++)
 	{
-		currentCell[i] = currentCell[i] - 1/tau * (currentCell[i] - feq[i]);
+		currentCell[i] = currentCell[i] - 1.0/ *tau * (currentCell[i] - feq[i]);
 	}
 }
 
@@ -27,10 +27,10 @@ void doCollision(double *collideField, int *flagField, const double * const tau,
 	  /* No left and right border, only inner cells */
 	  if(currentIndex % (xlength+2) != 0 && currentIndex % (xlength+2) != xlength+1)
 	  {
-			currentCell = collideField[currentIndex];
+			currentCell = &collideField[currentIndex];
 			computeDensity(currentCell, &density);
 			computeVelocity(currentCell, &density, velocity);
-			computeFeq(density, velocity, feq);
+			computeFeq(&density, velocity, feq);
 			computePostCollisionDistributions(currentCell, tau, feq);
 			/* Next cell begins after 19 f-values */
 			currentIndex += 19;
