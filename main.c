@@ -8,18 +8,24 @@
 #include "boundary.h"
 
 int main(int argc, char *argv[]){
-  double *collideField = NULL;
-  double *streamField = NULL;
-  int *flagField = NULL;
-  int xlength;
-  double tau;
-  double velocityWall[3];
-  int timesteps;
-  int timestepsPerPlotting;
+
+  double  *collideField = NULL;
+  double  *streamField = NULL;
+  int      *flagField = NULL;
+  double  tau;
+  double  velocityWall[3];
+  int     timesteps, timestepsPerPlotting, xlength;
 
   char* filename;
   int t;
 
+  /* check if the argument is passed */
+   if(argc < 1)
+   {
+       printf("pass the configuration file as first argument\n");
+   }
+
+  /* read the parameters*/
   readParameters(&xlength, &tau, velocityWall, &timesteps, &timestepsPerPlotting, argc, argv);
 
   filename = "./Out/Output";
