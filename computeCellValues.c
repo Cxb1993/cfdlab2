@@ -6,7 +6,7 @@ void computeDensity(const double * const currentCell, double *density)
 	/* See formula 9 */
 	double sum;
 	int i;
-	for(i=0; i<19; i++)
+	for(i=0; i<Q; i++)
 	{
 		sum += currentCell[i];
 	}
@@ -35,7 +35,7 @@ void computeFeq(const double * const density, const double * const velocity, dou
 {
 	/* See formula 10 */
 	int i;
-	for(i = 0; i < 19; i++)
+	for(i = 0; i < Q; i++)
 	{
 		feq[i] = LATTICEWEIGHTS[i] * *density * (1
 				+ (LATTICEVELOCITIES[i][0]*velocity[0] +
