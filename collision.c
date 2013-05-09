@@ -20,22 +20,21 @@ void doCollision(double *collideField, int *flagField, const double * const tau,
   int currentIndex;
 
   /* Set pointer to first cell that is not a boundary */
-  currentIndex = xlength+3;
+  currentIndex = (xlength+3);
 
   /* Last row is a border */
-  while(currentIndex < Q*(xlength+2)*(xlength+2)*(xlength+2) - Q*(xlength+2))
+  while(currentIndex < (xlength+2)*(xlength+2)*(xlength+2) - (xlength+2))
   {
 	  /* No left and right border, only inner cells */
 	  if(currentIndex % (xlength+2) != 0 && currentIndex % (xlength+2) != xlength+1)
 	  {
-			currentCell = &collideField[currentIndex];
+			currentCell = &collideField[currentIndex*Q];
 			computeDensity(currentCell, &density);
 			computeVelocity(currentCell, &density, velocity);
 			computeFeq(&density, velocity, feq);
 			computePostCollisionDistributions(currentCell, tau, feq);
-			/* Next cell begins after 19 f-values */
 	  }
-	  currentIndex += Q;
+	  currentIndex++;
   }
 }
 
