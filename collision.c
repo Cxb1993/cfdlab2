@@ -26,7 +26,7 @@ void doCollision(double *collideField, int *flagField, const double * const tau,
   while(currentIndex < (xlength+2)*(xlength+2)*(xlength+2) - (xlength+2))
   {
 	  /* No left and right border, only inner cells */
-	  if(currentIndex % (xlength+2) != 0 && currentIndex % (xlength+2) != xlength+1)
+	  if(flagField[currentIndex] == FLUID)
 	  {
 			currentCell = &collideField[currentIndex*Q];
 			computeDensity(currentCell, &density);
