@@ -6,11 +6,12 @@ void computeDensity(const double * const currentCell, double *density)
 	/* See formula 9 */
 	double sum;
 	int i;
+	sum = 0;
 	for(i=0; i<Q; i++)
 	{
 		sum += currentCell[i];
 	}
-	*density = sum/Q;
+	*density = sum;
 }
 
 void computeVelocity(const double * const currentCell, const double * const density, double *velocity)
