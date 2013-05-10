@@ -20,9 +20,10 @@ int main(int argc, char *argv[]){
   int t;
 
   /* check if the argument is passed */
-   if(argc < 1)
+   if(argc < 2)
    {
        printf("pass the configuration file as first argument\n");
+       return 0;
    }
 
   /* read the parameters*/
