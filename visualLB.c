@@ -32,25 +32,23 @@ void write_vtkHeader( FILE *fp, int xlength)
 void write_vtkPointCoordinates( FILE *fp, int xlength)
 {
 
-	double originX = 0.0;
-	double originY = 0.0;
-	double originZ = 0.0;
+    double originX = 0.0;
+    double originY = 0.0;
+    double originZ = 0.0;
 
-	int i = 0;
-	int j = 0;
-	int k = 0;
+    int x = 0;
+    int y = 0;
+    int z = 0;
 
-	for(i = 0; i < xlength+1; i++)
-	{
-		for(j = 0; j < xlength+1; j++)
-		{
-			for(k = 0; k < xlength+1; k++)
-			{
+    double delta = 1/(double)(xlength - 1);
 
-				fprintf(fp, "%f %f %f\n", originX+i, originY+j, originZ + k);
-			}
-		}
-	}
+    for(z = 0; z < xlength; ++z) {
+        for(y = 0; y < xlength; ++y) {
+            for(x = 0; x < xlength; ++x) {
+                fprintf(fp, "%f %f %f\n", originX+(x*delta), originY+(y*delta), originZ+(z*delta) );
+            }
+        }
+    }
 }
 
 
