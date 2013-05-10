@@ -10,7 +10,7 @@ void computeDensity(const double * const currentCell, double *density)
 	{
 		sum += currentCell[i];
 	}
-	*density = sum;
+	*density = sum/Q;
 }
 
 void computeVelocity(const double * const currentCell, const double * const density, double *velocity)
