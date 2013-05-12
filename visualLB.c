@@ -19,10 +19,6 @@ void write_vtkHeader( FILE *fp, int xlength)
 	fprintf(fp,"ASCII\n");
 	fprintf(fp,"\n");
 	fprintf(fp,"DATASET STRUCTURED_GRID\n");
-	/*
-	fprintf(fp,"DIMENSIONS  %i %i %i \n", xlength+1, xlength+1, xlength+1);
-	fprintf(fp,"POINTS %i float\n", (xlength+1)*(xlength+1)*(xlength+1) );
-	*/
 	fprintf(fp,"DIMENSIONS  %i %i %i \n", xlength, xlength, xlength);
 	fprintf(fp,"POINTS %i float\n", (xlength)*(xlength)*(xlength) );
 	fprintf(fp,"\n");
@@ -42,12 +38,11 @@ void write_vtkPointCoordinates( FILE *fp, int xlength)
 
     double delta = 1/(double)(xlength - 1);
 
-    for(z = 0; z < xlength; ++z) {
-        for(y = 0; y < xlength; ++y) {
-            for(x = 0; x < xlength; ++x) {
-                fprintf(fp, "%f %f %f\n", originX+(x*delta), originY+(y*delta), originZ+(z*delta) );
-            }
-        }
+    for(z = 0; z < xlength; ++z)
+    for(y = 0; y < xlength; ++y)
+    for(x = 0; x < xlength; ++x)
+    {
+    	fprintf(fp, "%f %f %f\n", originX+(x*delta), originY+(y*delta), originZ+(z*delta) );
     }
 }
 
@@ -77,34 +72,32 @@ void writeVtkOutput(const double * const collideField, const int * const flagFie
 	fprintf(fp,"\n");
 	fprintf(fp,"POINT_DATA %i \n", (xlength)*(xlength)*(xlength) );
 	fprintf(fp, "VECTORS velocity float\n");
-	/* Output only inner cells from 1 to xlength + 1 */
+
+	/*
+	Output velocity values
+	Output only inner cells from 1 to xlength + 1
+	*/
 	for(x = 1; x < xlength+1; x++)
+	for(y = 1; y < xlength+1; y++)
+	for(z = 1; z < xlength+1; z++)
 	{
-		for(y = 1; y < xlength+1; y++)
-		{
-			for(z = 1; z < xlength+1; z++)
-			{
-				/* Compute adress of current cell */
-				computeDensity(&collideField[Q*(z*(xlength+2)*(xlength+2) + y*(xlength+2) + x)], &density);
-				computeVelocity(&collideField[Q*(z*(xlength+2)*(xlength+2) + y*(xlength+2) + x)], &density, velocity);
-				fprintf(fp, "%f %f %f\n", velocity[0], velocity[1], velocity[2]);
-			}
-		}
+		/* Compute adress of current cell */
+		computeDensity(&collideField[Q*(z*(xlength+2)*(xlength+2) + y*(xlength+2) + x)], &density);
+		computeVelocity(&collideField[Q*(z*(xlength+2)*(xlength+2) + y*(xlength+2) + x)], &density, velocity);
+		fprintf(fp, "%f %f %f\n", velocity[0], velocity[1], velocity[2]);
 	}
 
+	/* Output density values */
 	fprintf(fp,"\n");
-	fprintf(fp, "SCALARS pressure float 1 \n");
+	fprintf(fp, "SCALARS density float 1 \n");
 	fprintf(fp, "LOOKUP_TABLE default \n");
+
 	for(x = 1;  x < xlength+1; x++)
+	for(y = 1; y < xlength+1; y++)
+	for(z = 1; z < xlength+1; z++)
 	{
-		for(y = 1; y < xlength+1; y++)
-		{
-			for(z = 1; z < xlength+1; z++)
-			{
-				computeDensity(&collideField[Q*(z*(xlength+2)*(xlength+2) + y*(xlength+2) + x)], &density);
-				fprintf(fp, "%f\n", density);
-			}
-		}
+		computeDensity(&collideField[Q*(z*(xlength+2)*(xlength+2) + y*(xlength+2) + x)], &density);
+		fprintf(fp, "%f\n", density);
 	}
 
 	if( fclose(fp) )
