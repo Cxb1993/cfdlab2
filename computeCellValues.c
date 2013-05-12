@@ -28,7 +28,6 @@ void computeVelocity(const double * const currentCell, const double * const dens
 		velocity[2] += currentCell[i]*LATTICEVELOCITIES[i][2];
 	}
 
-
 	velocity[0] = velocity[0] / *density;
 	velocity[1] = velocity[1] / *density;
 	velocity[2] = velocity[2] / *density;
@@ -36,7 +35,6 @@ void computeVelocity(const double * const currentCell, const double * const dens
 
 void computeFeq(const double * const density, const double * const velocity, double *feq)
 {
-	/* See formula 10 */
 	int i;
 	for(i = 0; i < Q; i++)
 	{
@@ -53,4 +51,5 @@ void computeFeq(const double * const density, const double * const velocity, dou
 				- (velocity[0]*velocity[0] + velocity[1]*velocity[1] + velocity[2]*velocity[2])/(2*C_S*C_S)
 				);
 	}
+
 }
