@@ -47,63 +47,59 @@ void write_vtkPointCoordinates( FILE *fp, int xlength)
 void writeVtkOutput(const double * const collideField,
                     const int * const flagField,
                     const char *filename,
-                    int t,
+                    unsigned int t,
                     int xlength)
 {
-	double density;
-	double velocity[3];
+    int idx = 0;
+    int x = 0;
+    int y = 0;
+    int z = 0;
+    char szFileName[80];
+    FILE *fp=NULL;
+    double density = 0;
+    double velocity[3];
 
-	int x, y, z;
 
-	FILE *fp=NULL;
-	char szFileName[80];
-	sprintf( szFileName, "%s.%i.vtk", filename, t);
-	fp = fopen( szFileName, "w");
-	if(fp == NULL)
-	{
-		char szBuff[80];
-		sprintf( szBuff, "Failed to open %s", szFileName);
-		ERROR( szBuff );
-		return;
-	}
+    sprintf( szFileName, "%s.%i.vtk", filename, t );
+    fp = fopen( szFileName, "w");
+    if( fp == NULL )
+    {
+      char szBuff[80];
+      sprintf( szBuff, "Failed to open %s", szFileName );
+      ERROR( szBuff );
+      return;
+    }
 
-	write_vtkHeader(fp, xlength);
-	write_vtkPointCoordinates(fp, xlength);
+    write_vtkHeader(fp, xlength);
+    write_vtkPointCoordinates(fp, xlength);
 
-	fprintf(fp,"\n");
-	fprintf(fp,"POINT_DATA %i \n", (xlength)*(xlength)*(xlength) );
-	fprintf(fp, "VECTORS velocity float\n");
-
-	/* Output velocity values */
-    for(z = 1; z <= xlength; ++z)
-    for(y = 1; y <= xlength; ++y)
-    for(x = 1; x <= xlength; ++x)
-	{
-		/* Compute adress of current cell */
-		computeDensity(&collideField[Q*(z*(xlength+2)*(xlength+2) + y*(xlength+2) + x)], &density);
-		computeVelocity(&collideField[Q*(z*(xlength+2)*(xlength+2) + y*(xlength+2) + x)], &density, velocity);
-		fprintf(fp, "%f %f %f\n", velocity[0], velocity[1], velocity[2]);
-	}
-
-	/* Output density values */
-	fprintf(fp,"\n");
-	fprintf(fp, "SCALARS density float 1 \n");
-	fprintf(fp, "LOOKUP_TABLE default \n");
+    /* velocity */
+    fprintf(fp, "\n");
+    fprintf(fp, "POINT_DATA %i \n", ((xlength) * (xlength) * (xlength)) );
+    fprintf(fp, "VECTORS velocity float \n");
 
     for(z = 1; z <= xlength; ++z)
     for(y = 1; y <= xlength; ++y)
     for(x = 1; x <= xlength; ++x)
-	{
-		computeDensity(&collideField[Q*(z*(xlength+2)*(xlength+2) + y*(xlength+2) + x)], &density);
-		fprintf(fp, "%f\n", density);
-	}
+    {
+    	idx = ( z*(xlength+2)*(xlength+2) + y*(xlength+2) + x );
+     	computeDensity(&collideField[Q*idx], &density);
+     	computeVelocity(&collideField[Q*idx], &density, velocity);
+    	fprintf(fp, "%f %f %f\n", velocity[0], velocity[1], velocity[2] );
+    }
 
-	if( fclose(fp) )
-	{
-		char szBuff[80];
-		sprintf( szBuff, "Failed to close %s", szFileName );
-		ERROR( szBuff );
-	}
+    /* density */
+    fprintf(fp, "\n");
+    fprintf(fp, "SCALARS density float 1 \n");
+    fprintf(fp, "LOOKUP_TABLE default \n");
+    for(z = 1; z <= xlength; ++z)
+    for(y = 1; y <= xlength; ++y)
+    for(x = 1; x <= xlength; ++x)
+    {
+     	idx = ( z*(xlength+2)*(xlength+2) + y*(xlength+2) + x );
+    	computeDensity(&collideField[Q*idx], &density);
+    	fprintf(fp, "%f\n", density );
+    }
 }
 
 
