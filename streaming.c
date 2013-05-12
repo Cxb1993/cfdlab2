@@ -11,16 +11,17 @@ void doStreaming(double *collideField, double *streamField,int *flagField,int xl
     {
         /* index in the field */
         idx = ( z*(xlength+2)*(xlength+2) + y*(xlength+2) + x );
-
         if (flagField[idx] == FLUID)
         {
         	for (i = 0; i < Q; ++i)
             {
-        		  /* index in the field */
-        		fIdx = ( (z+LATTICEVELOCITIES[i][2])*(xlength+2)*(xlength+2)
-                                 + (y+LATTICEVELOCITIES[i][1])*(xlength+2)
-                                 + (x+LATTICEVELOCITIES[i][0]) );
-                streamField[Q * idx + (Q-1-i)] = collideField[Q * fIdx + (Q-1-i)];
+        		/* index in the field */
+        		fIdx = ( (    z+LATTICEVELOCITIES[i][2])*(xlength+2)*(xlength+2)
+                           + (y+LATTICEVELOCITIES[i][1])*(xlength+2)
+                           + (x+LATTICEVELOCITIES[i][0]));
+        		/* add the inverted vector*/
+        	    streamField[Q * idx + (Q-1-i)] = collideField[Q * fIdx + (Q-1-i)];
+
            }
         }
     }
