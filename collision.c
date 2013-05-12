@@ -8,7 +8,7 @@ void computePostCollisionDistributions(double *currentCell, const double * const
 	int i;
 	for(i=0; i<Q; i++)
 	{
-		currentCell[i] = currentCell[i] - 1.0/ *tau * (currentCell[i] - feq[i]);
+		currentCell[i] = currentCell[i] - ((currentCell[i] - feq[i]) / (*tau)) ;
 	}
 }
 
@@ -37,4 +37,3 @@ void doCollision(double *collideField, int *flagField, const double * const tau,
 	  currentIndex++;
   }
 }
-
