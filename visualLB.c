@@ -25,7 +25,6 @@ void write_vtkHeader( FILE *fp, int xlength) {
 
 void write_vtkPointCoordinates( FILE *fp, int xlength)
 {
-
     double originX = 0.0;
     double originY = 0.0;
     double originZ = 0.0;
@@ -75,10 +74,7 @@ void writeVtkOutput(const double * const collideField,
 	fprintf(fp,"POINT_DATA %i \n", (xlength)*(xlength)*(xlength) );
 	fprintf(fp, "VECTORS velocity float\n");
 
-	/*
-	Output velocity values
-	Output only inner cells from 1 to xlength + 1
-	*/
+	/* Output velocity values */
     for(z = 1; z <= xlength; ++z)
     for(y = 1; y <= xlength; ++y)
     for(x = 1; x <= xlength; ++x)
@@ -108,7 +104,6 @@ void writeVtkOutput(const double * const collideField,
 		sprintf( szBuff, "Failed to close %s", szFileName );
 		ERROR( szBuff );
 	}
-
 }
 
 
