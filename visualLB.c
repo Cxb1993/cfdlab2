@@ -59,7 +59,6 @@ void writeVtkOutput(const double * const collideField,
     double density = 0;
     double velocity[3];
 
-
     sprintf( szFileName, "%s.%i.vtk", filename, t );
     fp = fopen( szFileName, "w");
     if( fp == NULL )
